@@ -11,7 +11,8 @@
     "start": "node dist/server.js",
     "build": "tsc",
     "clean": "rm -rf ./dist",
-    "postinstall": "tsc"
+    "postinstall": "tsc",
+    "migration-generate": "typeorm migration:generate -n"
 
   },
   "author": "",
