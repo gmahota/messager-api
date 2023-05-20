@@ -53,4 +53,25 @@ export async function messageRoutes(fastify: FastifyInstance) {
             messages
         }
     })
+
+    fastify.post('/messages/:cellphone/:from/reset', async (request) => {
+
+        const getMessageBody = z.object({
+            cellphone: z.string(),
+            from: z.string()
+        })
+
+        const { cellphone,from } = getMessageBody.parse(request.params)
+
+        const messages = await prisma.message.deleteMany({
+            where: {
+                cellphone: cellphone,
+                text: from
+            }
+        })
+
+        return {
+            messages
+        }
+    })
 }
