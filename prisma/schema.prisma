@@ -17,5 +17,5 @@ model Message {
   text      String
   message   String
   reply     String?
-  json      String?
+  json      Json?
 }
