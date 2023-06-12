@@ -63,7 +63,7 @@ export async function messageRoutes(fastify: FastifyInstance) {
 
         const { cellphone,from } = getMessageBody.parse(request.params)
 
-        const messages = await prisma.message.deleteMany({
+        await prisma.message.deleteMany({
             where: {
                 cellphone: cellphone,
                 text: from
@@ -71,7 +71,7 @@ export async function messageRoutes(fastify: FastifyInstance) {
         })
 
         return {
-            messages
+            
         }
     })
 }
