@@ -11,11 +11,9 @@
     "start": "node dist/server.js",
     "build": "tsc",
     "clean": "rm -rf ./dist",
-    "postinstall": "tsc",
-    "migration-generate": "typeorm migration:generate -n"
-
+    "postinstall": "tsc"
   },
-  "author": "",
+  "author": "Guimarães Mahota",
   "license": "ISC",
   "prisma": {
     "seed": "tsx prisma/seed.ts"
