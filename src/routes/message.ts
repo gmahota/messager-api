@@ -9,7 +9,7 @@ export async function messageRoutes(fastify: FastifyInstance) {
         return { count }
     })
 
-    fastify.post('/messages/create', async (request, replay) => {
+    fastify.post('/message/create', async (request, replay) => {
 
         const createMessageBody = z.object({
             name: z.string(),
