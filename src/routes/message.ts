@@ -1,77 +1,79 @@
-import { FastifyInstance } from 'fastify';
+import { Router, Request, Response } from "express";
 import { prisma } from '../lib/prisma'
 
 import { z } from 'zod'
 
-export async function messageRoutes(fastify: FastifyInstance) {
-    fastify.get('/messages/count', async () => {
-        const count = await prisma.message.count();
-        return { count }
+const messageRouter = Router();
+
+messageRouter.get('/messages/count', async (request: Request, response: Response) => {
+    const count = await prisma.message.count();
+    return response.status(200).json({ count })
+})
+
+messageRouter.post('/message/create', async (request: Request, response: Response) => {
+
+    const createMessageBody = z.object({
+        name: z.string(),
+        cellphone: z.string(),
+        text: z.string(),
+        message: z.string(),
+        reply:z.string().optional()
     })
 
-    fastify.post('/message/create', async (request, replay) => {
+    console.log(request.body)
 
-        const createMessageBody = z.object({
-            name: z.string(),
-            cellphone: z.string(),
-            text: z.string(),
-            message: z.string(),
-            reply:z.string()
-        })
+    const { name, cellphone, text, message,reply } = createMessageBody.parse(request.body)
 
-        const { name, cellphone, text, message,reply } = createMessageBody.parse(request.body)
-
-        const _message = await prisma.message.create({
-            data: {
-                name, cellphone, text, message,reply
-            }
-        })
-
-        return { _message }
-    })
-
-    fastify.get('/messages/:cellphone/:from', async (request) => {
-
-        const getMessageBody = z.object({
-            cellphone: z.string(),
-            from: z.string()
-        })
-
-        const { cellphone,from } = getMessageBody.parse(request.params)
-
-        const messages = await prisma.message.findMany({
-            where: {
-                cellphone: cellphone,
-                text: from,
-            },
-            orderBy: {
-                id: 'asc'
-            }
-        })
-
-        return {
-            messages
+    const _message = await prisma.message.create({
+        data: {
+            name, cellphone, text, message,reply
         }
     })
 
-    fastify.post('/messages/:cellphone/:from/reset', async (request) => {
+    return  response.status(200).json({ _message })
+})
 
-        const getMessageBody = z.object({
-            cellphone: z.string(),
-            from: z.string()
-        })
+messageRouter.get('/messages/:cellphone/:from', async (request: Request, response: Response) => {
 
-        const { cellphone,from } = getMessageBody.parse(request.params)
+    const getMessageBody = z.object({
+        cellphone: z.string(),
+        from: z.string()
+    })
 
-        await prisma.message.deleteMany({
-            where: {
-                cellphone: cellphone,
-                text: from
-            }
-        })
+    const { cellphone,from } = getMessageBody.parse(request.params)
 
-        return {
-            
+    const messages = await prisma.message.findMany({
+        where: {
+            cellphone: cellphone,
+            text: from,
+        },
+        orderBy: {
+            id: 'asc'
         }
     })
-}
+
+    return response.status(200).json({
+        messages
+    })
+})
+
+messageRouter.post('/messages/:cellphone/:from/reset', async (request: Request, response: Response) => {
+
+    const getMessageBody = z.object({
+        cellphone: z.string(),
+        from: z.string()
+    })
+
+    const { cellphone,from } = getMessageBody.parse(request.params)
+
+    await prisma.message.deleteMany({
+        where: {
+            cellphone: cellphone,
+            text: from
+        }
+    })
+
+    return response.status(200)
+})
+
+export default messageRouter;

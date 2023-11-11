@@ -1,26 +1,23 @@
-import Fastify from 'fastify'
-import cors from '@fastify/cors'
-import jwt from '@fastify/jwt'
+import express, { response } from "express";
+import path from "path";
+import cors from "cors";
+import dotenv from "dotenv";
+import "express-async-errors";
 
-import { messageRoutes } from './routes/message'
+import routes from "./routes/routes";
 
-async function bootstrap() {
-    const fastify = Fastify({
-        logger: true
-    })
+dotenv.config();
 
-    await fastify.register(cors, {
-        credentials: true,
-        origin: '*'
-    })
+const app = express();
 
-    await fastify.register(jwt, {
-        secret: 'gui-messager'
-    })
+// Constants
+const port = process.env.PORT || 5000;
 
-    await fastify.register(messageRoutes)
+app.use(cors()); 
+app.use(express.json());
+app.use(routes);
+app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 
-    await fastify.listen({ port: 3333, host: '0.0.0.0' })
-}
-
-bootstrap() 
+app.listen(port,() => {
+    return console.log(`Server is listening on ${port}`)
+});
