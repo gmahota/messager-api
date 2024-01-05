@@ -1,0 +1,82 @@
+{
+  "info": {
+    "_postman_id": "87f947ca-9d68-41ba-b3ee-818e37229dea",
+    "name": "Messages API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "3180414",
+    "_collection_link": "https://your-postman-collection-link"
+  },
+  "item": [
+    {
+      "name": "Count Messages",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://your-api-url/messages/count",
+          "protocol": "https",
+          "host": ["your-api-url"],
+          "path": ["messages", "count"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Message",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"John Doe\",\n  \"cellphone\": \"123456789\",\n  \"text\": \"Hello!\",\n  \"message\": \"Important message content\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://your-api-url/message/create",
+          "protocol": "https",
+          "host": ["your-api-url"],
+          "path": ["message", "create"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Messages",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://your-api-url/messages/:cellphone/:from",
+          "protocol": "https",
+          "host": ["your-api-url"],
+          "path": ["messages", ":cellphone", ":from"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Reset Messages",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "https://your-api-url/messages/:cellphone/:from/reset",
+          "protocol": "https",
+          "host": ["your-api-url"],
+          "path": ["messages", ":cellphone", ":from", "reset"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
